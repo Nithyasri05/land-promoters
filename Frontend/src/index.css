@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Alike&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+del{
+    @apply text-red-700 bg-slate-200 font-light
+}
+
+a{
+    @apply text-blue-600 underline
+}
+
+.buttondark{
+    @apply bg-lightbrown  text-white rounded-sm mx-2 my-5 px-4 py-2
+}
+
+.buttonligth{
+    @apply text-black bg-white rounded-md mx-2 px-4 py-2
+}
+.spanheading{
+    @apply  text-lightbrown md:font-semibold md:text-xl text-base   
+}
+
+.heading{
+    @apply my-2  md:text-2xl text-xl font-bold text-primary
+}
+.inputbox{
+   @apply bg-slate-100 border-[1px] mt-2 rounded-sm outline-none border-gray-400 w-full px-3 py-2
+}
+
+.delet{
+    @apply text-red-600 m-0 p-0
+}
+
+  .input_box{
+    @apply  px-5 py-2 rounded-md bg-white outline-none border-[1px] border-gray-400
+}
+.buttondark{
+    background-color:#412419;
+}

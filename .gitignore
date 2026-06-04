@@ -1,0 +1,11 @@
+/node_modules
+/New Text Document.txt
+
+# Ignore environment and secret files
+backend/config/config.env
+.env
+.env.*
+.secrets
+
+# OS
+.DS_Store

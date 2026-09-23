@@ -18,7 +18,7 @@ export default function AboutPage() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">Building Dreams on <span className="text-amber-500">Solid Ground</span></h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            With over 15 years of excellence, LandPromoters is Coimbatore's most trusted name in real estate and land development.
+            Since 2020, LandPromoters has helped families and investors find trustworthy opportunities in real estate and land development.
           </p>
         </div>
       </section>
@@ -40,13 +40,13 @@ export default function AboutPage() {
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">A Legacy of Trust and Transparency</h2>
             <div className="space-y-4 text-gray-600 leading-relaxed text-lg">
               <p>
-                Founded in 2020, LandPromoters started with a simple vision: to make land investment safe, transparent, and profitable for everyone. What began as a small agency has now grown into one of Tamil Nadu's leading real estate developers.
+                Founded in 2020, LandPromoters began with a simple vision: to make land investment safe, transparent, and accessible to everyone. In the years since, we have grown by helping families and investors make confident property decisions.
               </p>
               <p>
-                We understand that buying a property is one of the most significant decisions in a person's life. That's why we ensure every piece of land we promote is 100% legally clear, DTCP/RERA approved, and ready for development.
+                From the beginning, we have understood that buying property is one of the most significant decisions in a person's life. That's why every property we promote is carefully checked for legal clarity, DTCP/RERA approval, and development potential.
               </p>
               <p>
-                Our commitment to our clients doesn't end at the sale. We build relationships that last generations, providing post-sale support, registration assistance, and property management advice.
+                Our commitment has remained the same since day one: to support clients beyond the sale with registration assistance, clear guidance, and dependable after-sales service.
               </p>
             </div>
           </div>

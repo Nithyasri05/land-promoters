@@ -135,7 +135,7 @@ export default function HomePage() {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div>
               <span className="text-amber-400 font-semibold tracking-widest uppercase text-sm mb-2 block">Our Advantage</span>
               <h2 className="section-heading text-white mb-6">Why Invest With LandPromoters?</h2>
@@ -168,7 +168,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="relative h-[600px] rounded-3xl overflow-hidden shadow-2xl shadow-amber-900/20 group">
+            <div className="relative h-[320px] sm:h-[400px] lg:h-[600px] rounded-3xl overflow-hidden shadow-2xl shadow-amber-900/20 group">
               <img
                 src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
                 alt="Investment"

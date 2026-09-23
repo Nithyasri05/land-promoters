@@ -1,13 +1,21 @@
-const mongodb=require('mongoose')
+const mongoose = require('mongoose');
 
-const datadaseconnection=()=>{
-    mongodb.connect(process.env.DB_LOCAL_PORT,{
-        useUnifiedTopology: true,
-        useNewUrlParser: true,
-    }).then(
-        console.log(`server running in the port ${process.env.DB_LOCAL_PORT}`)
-    ).catch(err=>(
-        console.log(`err`)
-    ))
-}
-module.exports=datadaseconnection;
+const connectDatabase = () => {
+  mongoose
+    .connect(process.env.DB_LOCAL_PORT)
+    .then((conn) => {
+      console.log(`✅ MongoDB connected: ${conn.connection.host}`);
+    })
+    .catch((err) => {
+      console.error(`❌ MongoDB connection error: ${err.message}`);
+      // Retry after 5 seconds
+      console.log('Retrying connection in 5 seconds...');
+      setTimeout(connectDatabase, 5000);
+    });
+
+  mongoose.connection.on('disconnected', () => {
+    console.log('⚠️  MongoDB disconnected');
+  });
+};
+
+module.exports = connectDatabase;

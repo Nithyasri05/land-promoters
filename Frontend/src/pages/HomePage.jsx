@@ -37,7 +37,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-white">
       <SEO title="Home" description="Build your dream on solid ground with our premium land development." />
       {/* ─── Hero Section ─── */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[680px] h-[100svh] max-h-[900px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
             src="https://images.unsplash.com/photo-1513694203232-719a280e022f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
@@ -51,9 +51,9 @@ export default function HomePage() {
           <span className="inline-block py-1 px-4 rounded-full bg-amber-500/20 text-amber-400 text-sm font-semibold tracking-[0.2em] mb-6 border border-amber-500/30 backdrop-blur-sm animate-fade-in-up animation-fill-both animation-delay-200">
             ✦ PREMIUM LAND DEVELOPMENT
           </span>
-          <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-white mb-6 leading-tight animate-fade-in-up animation-fill-both animation-delay-400"
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-white mb-6 leading-tight animate-fade-in-up animation-fill-both animation-delay-400"
             style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-            Build Your Dream on <br />
+            Build Your Dream on <br className="hidden sm:block" />
             <span className="text-gradient-amber">Solid Ground</span>
           </h1>
           <p className="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in-up animation-fill-both animation-delay-600">

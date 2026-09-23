@@ -104,7 +104,7 @@ export default function PropertyDetailPage() {
         <div className="bg-white p-4 rounded-3xl shadow-sm border border-gray-100 mb-12">
           {p.images && p.images.length > 0 ? (
             <div className="space-y-4">
-              <div className="relative h-[400px] md:h-[600px] rounded-2xl overflow-hidden group">
+              <div className="relative h-[260px] sm:h-[400px] md:h-[600px] rounded-2xl overflow-hidden group">
                 <img 
                   src={p.images[activeImage]} 
                   alt={p.title} 
@@ -126,7 +126,7 @@ export default function PropertyDetailPage() {
               </div>
             </div>
           ) : (
-            <div className="h-[400px] md:h-[600px] bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl flex flex-col items-center justify-center">
+            <div className="h-[260px] sm:h-[400px] md:h-[600px] bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl flex flex-col items-center justify-center">
               <svg className="w-24 h-24 text-amber-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>

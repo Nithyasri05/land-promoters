@@ -92,7 +92,7 @@ export default function AdminMessages() {
       <div className="grid lg:grid-cols-3 gap-6">
         
         {/* Messages List */}
-        <div className="lg:col-span-1 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-[calc(100vh-200px)]">
+        <div className="lg:col-span-1 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-[360px] lg:h-[calc(100vh-200px)]">
           <div className="p-4 border-b border-gray-100 bg-gray-50 font-medium text-gray-700">
             All Messages ({messages.length})
           </div>
@@ -127,7 +127,7 @@ export default function AdminMessages() {
         {/* Message Viewer */}
         <div className="lg:col-span-2">
           {viewMessage ? (
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 h-[calc(100vh-200px)] flex flex-col">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-8 min-h-[560px] lg:h-[calc(100vh-200px)] lg:min-h-0 flex flex-col">
               <div className="flex items-start justify-between gap-4 mb-8 border-b border-gray-100 pb-6">
                 <div>
                   <h2 className="text-xl font-bold text-gray-900 mb-2">{viewMessage.subject}</h2>
@@ -143,8 +143,8 @@ export default function AdminMessages() {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col items-end gap-3">
-                  <span className="text-sm text-gray-500">
+                <div className="flex flex-col items-end gap-3 shrink-0">
+                  <span className="text-xs sm:text-sm text-gray-500 text-right">
                     {new Date(viewMessage.createdAt).toLocaleString()}
                   </span>
                   <button 
@@ -161,7 +161,7 @@ export default function AdminMessages() {
               </div>
               
               <div className="flex-1 overflow-y-auto">
-                <div className="bg-gray-50 rounded-xl p-6 text-gray-700 whitespace-pre-wrap leading-relaxed">
+                <div className="bg-gray-50 rounded-xl p-4 sm:p-6 text-gray-700 whitespace-pre-wrap leading-relaxed break-words">
                   {viewMessage.feedback}
                 </div>
               </div>
@@ -199,7 +199,7 @@ export default function AdminMessages() {
               </div>
             </div>
           ) : (
-            <div className="bg-gray-50 rounded-2xl border border-gray-200 border-dashed h-[calc(100vh-200px)] flex flex-col items-center justify-center text-gray-400">
+            <div className="bg-gray-50 rounded-2xl border border-gray-200 border-dashed min-h-[360px] lg:h-[calc(100vh-200px)] flex flex-col items-center justify-center text-gray-400">
               <svg className="w-16 h-16 mb-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
               </svg>

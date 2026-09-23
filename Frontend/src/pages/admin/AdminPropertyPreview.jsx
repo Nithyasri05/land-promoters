@@ -57,11 +57,19 @@ export default function AdminPropertyPreview() {
             Properties
           </Link>
           <h1 className="text-2xl font-bold text-gray-900 mt-1">Property Preview</h1>
-          <p className="text-sm text-gray-500">Admin-only preview. This view is separate from the client website.</p>
+          <p className="text-gray-500 text-sm">Preview the details of this property</p>
         </div>
-        <Link to="/admin/properties" className="inline-flex justify-center px-5 py-3 bg-white border border-gray-200 text-gray-700 font-semibold rounded-xl hover:border-gray-300">
-          Back to list
-        </Link>
+        <div className="flex flex-wrap gap-3">
+          <Link to={`/admin/properties/${property.slug}/edit`} className="inline-flex items-center gap-2 justify-center px-5 py-3 bg-amber-600 text-white font-semibold rounded-xl hover:bg-amber-700">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.5-9.5a2.121 2.121 0 013 3L12 14l-4 1 1-4 7.5-7.5z" />
+            </svg>
+            Edit Property
+          </Link>
+          <Link to="/admin/properties" className="inline-flex justify-center px-5 py-3 bg-white border border-gray-200 text-gray-700 font-semibold rounded-xl hover:border-gray-300">
+            Back to list
+          </Link>
+        </div>
       </div>
 
       <div className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">

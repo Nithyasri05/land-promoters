@@ -1,13 +1,18 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, Link, useParams } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks';
 import { addToast } from '../../store/slices/uiSlice';
 import API from '../../api/axios';
 
 export default function AdminPropertyForm() {
   const navigate = useNavigate();
+  const { slug } = useParams();
+  const isEditing = Boolean(slug);
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
+  const [loadingProperty, setLoadingProperty] = useState(isEditing);
+  const [editingId, setEditingId] = useState(null);
+  const [existingImages, setExistingImages] = useState([]);
   const [images, setImages] = useState([]);
   const [formData, setFormData] = useState({
     title: '',
@@ -28,6 +33,46 @@ export default function AdminPropertyForm() {
     amenities: '',
     isFeatured: false
   });
+
+  useEffect(() => {
+    if (!isEditing) return undefined;
+
+    const loadProperty = async () => {
+      try {
+        const { data } = await API.get(`/properties/${slug}`);
+        const property = data.property;
+        setEditingId(property._id || property.id);
+        setExistingImages(property.images || []);
+        setFormData({
+          title: property.title || '',
+          description: property.description || '',
+          propertyType: property.propertyType || 'Residential Plot',
+          status: property.status || 'Available',
+          price: property.price ?? '',
+          area: property.area ?? '',
+          dimensions: property.dimensions || '',
+          location: {
+            address: property.location?.address || '',
+            city: property.location?.city || 'Coimbatore',
+            state: property.location?.state || 'Tamil Nadu',
+            pincode: property.location?.pincode || '',
+            mapLink: property.location?.mapLink || '',
+          },
+          features: Array.isArray(property.features) ? property.features.join(', ') : '',
+          amenities: Array.isArray(property.amenities) ? property.amenities.join(', ') : '',
+          isFeatured: Boolean(property.isFeatured),
+        });
+      } catch (error) {
+        dispatch(addToast({ type: 'error', message: error.response?.data?.message || 'Failed to load property' }));
+        navigate('/admin/properties');
+      } finally {
+        setLoadingProperty(false);
+      }
+    };
+
+    loadProperty();
+    return undefined;
+  }, [dispatch, isEditing, navigate, slug]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -57,6 +102,10 @@ export default function AdminPropertyForm() {
     setLoading(true);
 
     try {
+      if (isEditing && !editingId) {
+        throw new Error('Property ID is missing. Please reopen the property and try again.');
+      }
+
       const data = new FormData();
       
       // Append basic fields
@@ -75,26 +124,35 @@ export default function AdminPropertyForm() {
       // Handle arrays (split by comma and trim)
       const featuresArray = formData.features.split(',').map(f => f.trim()).filter(f => f);
       const amenitiesArray = formData.amenities.split(',').map(a => a.trim()).filter(a => a);
-      data.append('features', JSON.stringify(featuresArray));
-      data.append('amenities', JSON.stringify(amenitiesArray));
+      data.append('features', isEditing ? featuresArray.join(',') : JSON.stringify(featuresArray));
+      data.append('amenities', isEditing ? amenitiesArray.join(',') : JSON.stringify(amenitiesArray));
       
       // Append images
       images.forEach(image => {
         data.append('images', image);
       });
 
-      await API.post('/admin/properties', data, {
+      const endpoint = isEditing ? `/admin/properties/${editingId}` : '/admin/properties';
+      await API[isEditing ? 'put' : 'post'](endpoint, data, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
-      dispatch(addToast({ type: 'success', message: 'Property created successfully' }));
-      navigate('/admin/properties');
+      dispatch(addToast({ type: 'success', message: `Property ${isEditing ? 'updated' : 'created'} successfully` }));
+      navigate(isEditing ? `/admin/properties/${slug}` : '/admin/properties');
     } catch (error) {
-      dispatch(addToast({ type: 'error', message: error.response?.data?.message || 'Failed to create property' }));
+      dispatch(addToast({ type: 'error', message: error.response?.data?.message || `Failed to ${isEditing ? 'update' : 'create'} property` }));
     } finally {
       setLoading(false);
     }
   };
+
+  if (loadingProperty) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-amber-600 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -105,8 +163,8 @@ export default function AdminPropertyForm() {
           </svg>
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-1">Add New Property</h1>
-          <p className="text-gray-500 text-sm">Create a new listing in your portfolio.</p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-1">{isEditing ? 'Edit Property' : 'Add New Property'}</h1>
+          <p className="text-gray-500 text-sm">{isEditing ? 'Update this listing in your portfolio.' : 'Create a new listing in your portfolio.'}</p>
         </div>
       </div>
 
@@ -319,8 +377,19 @@ export default function AdminPropertyForm() {
           {/* Images */}
           <div>
             <h3 className="text-lg font-bold text-gray-900 mb-4 border-b border-gray-100 pb-2">Images</h3>
+            {existingImages.length > 0 && (
+              <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 mb-5">
+                {existingImages.map((image, index) => (
+                  <div key={image} className="aspect-square rounded-xl overflow-hidden bg-gray-100 border border-gray-200">
+                    <img src={image} alt={`Current property photo ${index + 1}`} className="w-full h-full object-cover" />
+                  </div>
+                ))}
+              </div>
+            )}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Upload Property Images</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {isEditing ? 'Add More Property Photos' : 'Upload Property Images'}
+              </label>
               <input
                 type="file"
                 multiple
@@ -328,7 +397,9 @@ export default function AdminPropertyForm() {
                 onChange={handleImageChange}
                 className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none transition-all file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100"
               />
-              <p className="mt-2 text-xs text-gray-500">You can select multiple images at once.</p>
+              <p className="mt-2 text-xs text-gray-500">
+                {isEditing ? 'New photos will be added to the existing gallery.' : 'You can select multiple images at once.'}
+              </p>
             </div>
           </div>
 
@@ -344,7 +415,7 @@ export default function AdminPropertyForm() {
                   Saving...
                 </>
               ) : (
-                'Save Property'
+                isEditing ? 'Update Property' : 'Save Property'
               )}
             </button>
             <Link 

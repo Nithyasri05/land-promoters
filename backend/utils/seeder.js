@@ -236,6 +236,39 @@ const sampleTestimonials = [
   },
 ];
 
+const propertyImageSets = {
+  'Premium Residential Plot in Saravanampatti': [
+    'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80',
+  ],
+  'Spacious Villa Plot near Singanallur': [
+    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+  ],
+  'Commercial Plot on Avinashi Road': [
+    'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80',
+  ],
+  'Farm Land in Pollachi': [
+    'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80',
+  ],
+  'Budget Residential Plot in Vadavalli': [
+    'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80',
+  ],
+  'Luxury Villa Plot in Thudiyalur': [
+    'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80',
+  ],
+  'Sold - Prime Plot near Gandhipuram': [
+    'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80',
+  ],
+  'Residential Plot in Ganapathy': [
+    'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80',
+  ],
+  villa: [
+    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+  ],
+  land: [
+    'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80',
+  ],
+};
+
 const seedDatabase = async () => {
   try {
     await mongoose.connect(process.env.DB_LOCAL_PORT);
@@ -252,11 +285,29 @@ const seedDatabase = async () => {
 
       if (existingProperties === 0) {
         for (const property of sampleProperties) {
-          await Property.create(property);
+          await Property.create({
+            ...property,
+            images: propertyImageSets[property.title] || property.images,
+          });
         }
         console.log(`✅ Seeded ${sampleProperties.length} properties`);
       } else {
-        console.log(`⏭️  Skipped properties — ${existingProperties} already exist`);
+        let updatedProperties = 0;
+        const propertiesWithoutImages = await Property.find(
+          { $or: [{ images: { $exists: false } }, { images: { $size: 0 } }] },
+          'title',
+        );
+        for (const property of propertiesWithoutImages) {
+          const imageSet = propertyImageSets[property.title];
+          if (!imageSet) continue;
+
+          const result = await Property.updateOne(
+            { _id: property._id },
+            { $set: { images: imageSet } },
+          );
+          updatedProperties += result.modifiedCount;
+        }
+        console.log(`⏭️  Found ${existingProperties} properties; added photos to ${updatedProperties}`);
       }
 
       if (existingTestimonials === 0) {

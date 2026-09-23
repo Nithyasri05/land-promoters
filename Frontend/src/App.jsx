@@ -37,6 +37,7 @@ function App() {
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/properties" element={<AdminProperties />} />
           <Route path="/admin/properties/new" element={<AdminPropertyForm />} />
+          <Route path="/admin/properties/:slug/edit" element={<AdminPropertyForm />} />
           <Route path="/admin/properties/:slug" element={<AdminPropertyPreview />} />
           <Route path="/admin/messages" element={<AdminMessages />} />
           <Route path="/admin/testimonials" element={<AdminTestimonials />} />

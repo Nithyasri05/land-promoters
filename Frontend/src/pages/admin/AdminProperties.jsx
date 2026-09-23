@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchProperties } from '../../store/slices/propertySlice';
 import { addToast } from '../../store/slices/uiSlice';
@@ -8,6 +8,7 @@ import AdminConfirmModal from '../../components/admin/AdminConfirmModal';
 
 export default function AdminProperties() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { properties, loading } = useAppSelector((state) => state.property);
   const { isAuthenticated } = useAppSelector((state) => state.auth);
   const [deleteId, setDeleteId] = useState(null);
@@ -36,6 +37,8 @@ export default function AdminProperties() {
       setDeleteTarget(null);
     }
   };
+
+  const openProperty = (slug) => navigate(`/admin/properties/${slug}`);
 
   return (
     <>
@@ -85,7 +88,19 @@ export default function AdminProperties() {
                 </tr>
               ) : (
                 properties.map((property) => (
-                  <tr key={property._id} className="hover:bg-gray-50/50 transition-colors group">
+                  <tr
+                    key={property._id}
+                    onClick={() => openProperty(property.slug)}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        openProperty(property.slug);
+                      }
+                    }}
+                    role="link"
+                    tabIndex={0}
+                    className="cursor-pointer hover:bg-gray-50/50 focus-visible:bg-gray-50 focus-visible:outline-none transition-colors group"
+                  >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-4">
                         <div className="w-16 h-12 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0">
@@ -127,6 +142,7 @@ export default function AdminProperties() {
                     <td className="px-6 py-4 text-right space-x-3">
                       <Link 
                         to={`/admin/properties/${property.slug}`}
+                        onClick={(event) => event.stopPropagation()}
                         className="text-gray-400 hover:text-amber-600 transition-colors"
                         title="Preview Property"
                         aria-label={`Preview ${property.title}`}
@@ -137,7 +153,10 @@ export default function AdminProperties() {
                         </svg>
                       </Link>
                       <button 
-                        onClick={() => setDeleteTarget(property)}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          setDeleteTarget(property);
+                        }}
                         disabled={deleteId === property._id}
                         className="text-gray-400 hover:text-red-600 transition-colors disabled:opacity-50"
                         title="Delete Property"

@@ -1,9 +1,0 @@
-POST http://localhost:3000/api/landpromoters/contact-us
-Content-Type: application/json
-
-{
-    "name":"mani",
-    "email":"natshla@gmail.com",
-    "subject":"Testing mail",
-    "feedback":"testing mail message for users"
-}

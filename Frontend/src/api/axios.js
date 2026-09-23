@@ -2,7 +2,7 @@ import axios from 'axios';
 import { tokenStore } from '../lib/tokenStore';
 
 const API = axios.create({
-  baseURL: '/api/landpromoters',
+  baseURL: import.meta.env.VITE_API_URL || '/api/landpromoters',
   headers: { 'Content-Type': 'application/json' },
   timeout: 15000, // 15s request timeout — prevents hanging requests in production
 });
